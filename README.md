@@ -20,10 +20,11 @@ This Software is currently in alpha. At its core Whitespace works just fine, so 
 However, the app isn't ready yet. So for example there is no support for droping files or to encrypt the text and at the moment the app is also really ugly.
 
 ## How to install?
-Since the app is so young there aren't any binarys or packages. 
+1. [Download](https://github.com/flofriday/Whitespace/releases/tag/v0.0.1-alpha) the rigth binary for your Computer.
+2. Unzip the downloaded folder.
+3. Start the executeable.
 
-However, you can build it on your system by yourself:
-
+### Build it by your own
 1. [Install node](https://nodejs.org/en/download/ "Go to the node website.") if you haven't done yet.
 2. [Download](https://github.com/flofriday/Whitespace/archive/master.zip) this project and unzip it.
 3. Open a terminal in the unziped folder.

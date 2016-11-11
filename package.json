@@ -1,11 +1,22 @@
 {
-  "name": "whitespace",
+  "name": "Whitespace",
   "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "description": "~What you see is what you get.~",
+  "main": "app/main.js",
   "scripts": {
-    "start": "electron main.js"
+    "start": "electron app/main.js"
   },
-  "author": "flofriday (https://github.com/flofriday)",
-  "license": "GPL3"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flofriday/Whitespace.git"
+  },
+  "author": "flofriday",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/flofriday/Whitespace/issues"
+  },
+  "homepage": "https://github.com/flofriday/Whitespace#readme",
+  "dependencies": {
+    "electron": "^1.4.0"
+  }
 }

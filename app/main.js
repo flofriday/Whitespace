@@ -3,7 +3,7 @@ const {app, BrowserWindow} = electron;
 
 app.on('ready', (testvariable) =>
 {
-  let win = new BrowserWindow({width: 800, heigth: 600,icon: `file://${__dirname}/res/logo256.png`});
+  let win = new BrowserWindow({width: 800, heigth: 600,icon: `file://${__dirname}/res/logo256.p`});
   win.loadURL(`file://${__dirname}/index.html`);
   win.setMenu(null);
   console.log(" __        ___     _ _");
