@@ -22,7 +22,8 @@ However, the app isn't ready yet. So for example there is no support for droping
 ## How to install?
 Since the app is so young there aren't any binarys or packages. 
 
-However, you can build it on your system by yourself. 
+However, you can build it on your system by yourself:
+
 1. [Install node](https://nodejs.org/en/download/ "Go to the node website.") if you haven't done yet.
 2. [Download](https://github.com/flofriday/Whitespace/archive/master.zip) this project and unzip it.
 3. Open a terminal in the unziped folder.
