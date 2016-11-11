@@ -1,0 +1,110 @@
+html{
+  padding: 0;
+}
+
+.right, .left {
+  position: absolute;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.right{
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 50%;
+}
+
+.right h3{
+  color: #e57373;
+}
+
+.left{
+  top: 0;
+  right: 50%;
+  bottom: 0;
+  left: 0;
+}
+
+.left h3{
+  color: #009688;
+}
+
+.bottom {
+  height: 50px;
+  padding: 7px 0px;
+  position:fixed;
+  bottom:0;
+}
+
+.left .bottom{
+  background: #009688;
+  right: 50%;
+  left: 0;
+}
+
+.right .bottom{
+  background: #e57373;
+  right: 0;
+  left: 50%;
+}
+
+
+.midd{
+  text-align: center;
+  vertical-align: middle;
+}
+
+.content{
+  padding: 0px 15px;
+}
+
+textarea{
+  resize: none;
+  position: fixed;
+  width: calc(50% - 30px);
+  height: calc(100% - 150px);
+  border-width: 2px;
+  outline: none;
+  /*font-size: 120%;*/
+  font-family: "Roboto";
+  src: local(Roboto Light), url("../libs/materialize/fonts/roboto/Roboto-Light.eot");
+  src: url("../libs/materialize/fonts/roboto/Roboto-Light.eot?#iefix") format("embedded-opentype"), url("../libs/materialize/fonts/roboto/Roboto-Light.woff2") format("woff2"), url("../libs/materialize/fonts/roboto/Roboto-Light.woff") format("woff"), url("../libs/materialize/fonts/roboto/Roboto-Light.ttf") format("truetype");
+}
+
+#textareaInput{
+  border-color: #009688;
+}
+
+#textareaOutput{
+  border-color: #e57373;
+}
+
+
+@keyframes shadow_over{
+  from{box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0), 0 0px 0px 0 rgba(0, 0, 0, 0);}
+    to{box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);}
+}
+
+@keyframes shadow_out{
+  from{box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);}
+  to{box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0), 0 0px 0px 0 rgba(0, 0, 0, 0);}
+}
+
+textarea.over{
+  animation-name: shadow_over;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+textarea.out{
+  animation-name: shadow_out;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+#btnExchange{
+  margin: 30px;
+}
