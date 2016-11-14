@@ -153,7 +153,8 @@ function exchangeHTML()
 
 
 //creating some EventListener
-inputTextElement.addEventListener("input", updateOutputElement);
+inputTextElement.addEventListener("input", updateOutputElement);  //if the normal input changes
+inputTextElement.addEventListener("keydown", updateOutputElement);  //tabs aren't handeled as normal input so I have also to listen to a keydown event.
 executeElement.addEventListener("click", updateOutputElement);
 copyElement.addEventListener("click", outputToClipboard);
 saveElement.addEventListener("click", saveOutputContent);

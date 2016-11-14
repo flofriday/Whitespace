@@ -29,7 +29,8 @@ However, the app isn't ready yet. So for example there is no support for droping
 2. [Download](https://github.com/flofriday/Whitespace/archive/master.zip) this project and unzip it.
 3. Open a terminal in the unziped folder.
 4. Install [electron](http://electron.atom.io/) by typing `npm i electron-prebuilt`.
-5. To start the app type `npm start`.
+5. To start the app type `npm start`. You can also type npm test to open also the Chrome DevTools
+
 
 ## How can I help?
 You can review the app and write an [issue](https://github.com/flofriday/Whitespace/issues "Create a new issue") how I could improve Whitespace.
@@ -37,6 +38,6 @@ Or you can work on one of the problems below.
 
 * [ ] Better UI (feel free to rewrite it from scratch)
 * [ ] Encode whole files
-* [ ] Add different encryptions
-* [ ] Create a html file with a whitespace message at the end (add this file to /example/
+* [ ] Add some encryptions
+* [ ] Create a html file with a whitespace message at the end (add this file to /example/)
 
