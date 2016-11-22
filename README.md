@@ -28,7 +28,7 @@ However, the app isn't ready yet. So for example there is no support for droping
 1. [Install node](https://nodejs.org/en/download/ "Go to the node website.") if you haven't done yet.
 2. [Download](https://github.com/flofriday/Whitespace/archive/master.zip) this project and unzip it.
 3. Open a terminal in the unziped folder.
-4. Install [electron](http://electron.atom.io/) by typing `npm i electron-prebuilt`.
+4. Install [electron](http://electron.atom.io/) by typing `npm install`.
 5. To start the app type `npm start`. You can also type npm test to open also the Chrome DevTools
 
 

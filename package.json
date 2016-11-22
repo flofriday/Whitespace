@@ -1,8 +1,15 @@
 {
-  "name": "Whitespace",
+  "name": "whitespace",
   "version": "0.0.2",
-  "description": "~What you see is what you get.~",
+  "description": "A simple tool to hide text.",
   "main": "main.js",
+  "directories": {
+    "example": "example"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "electron": "^1.4.7"
+  },
   "scripts": {
     "start": "electron main.js",
     "test": "electron main.js --test"
@@ -16,9 +23,5 @@
   "bugs": {
     "url": "https://github.com/flofriday/Whitespace/issues"
   },
-  "homepage": "https://github.com/flofriday/Whitespace#readme",
-  "dependencies": {
-    "electron": "^1.4.0",
-    "rage-power": "^1.0.0"
-  }
+  "homepage": "https://github.com/flofriday/Whitespace#readme"
 }
