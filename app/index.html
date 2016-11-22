@@ -1,68 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Whitespace</title>
-
-  <!--Import Google Icon Font-->
-  <link type="text/css" rel="stylesheet" href="libs/googlefont/material-icons.css">
-  <!-- Compiled and minified CSS -->
-  <link type="text/css" rel="stylesheet" href="libs/materialize/css/materialize.css"  media="screen,projection"/>
-  <!--Import own Sylesheet-->
-  <link type="text/css" rel="stylesheet" href="index.css"/>
+	<title>Whitespace</title>
+	<link rel="icon" href="../res/logo.png">
+	<!--Import fullPage stylesheets-->
+	<link rel="stylesheet" type="text/css" href="libs/fullPage/examples/examples.css" />
+	<!--Import own Sylesheet-->
+	<link type="text/css" rel="stylesheet" href="index.css"/>
 </head>
 
+
 <body>
-  <div class="midd">
-    <a id="btnExchange" class="waves-effect waves-light btn blue lighten-2"><i class="material-icons left">swap_horiz</i> change</a>
-  </div>
 
-  <div class="left">
+	<div id="fullpage">
 
-    <div class="content">
-      <h3 id="leftheader" class="midd">Text</h3>
-
-      <textarea id="textareaInput"></textarea>
-    </div>
-
-    <div class="bottom midd">
-      <a id="btnExecute" class="waves-effect waves-light btn red lighten-2">encode to whitespaces</a>
-    </div>
+		<div class="section active" id="mainPage">
+			<h1>Main Screen</h1>
+			<textarea id="textareaInput" class="leftside" placeholder="Start typing to get hidden text."></textarea>
+			<textarea id="textareaOutput" class="rightside"></textarea>
+		</div>
 
 
-  </div>
-
-  <div class="right">
-
-    <div class="content">
-      <h3 id="rightheader" class="midd">Whitespace</h3>
-      <textarea readonly id=textareaOutput></textarea>
-    </div>
-
-    <div class="bottom midd">
-      <a id="btnCopy" class="waves-effect waves-light btn teal">copy</a>
-      <a id="btnSave" class="waves-effect waves-light btn teal">save</a>
-    </div>
-  </div>
+		<div class="section settingPage test">
+			<h1>Settings</h1>
+		</div>
 
 
-  <!-- Insert this line above script imports  -->
-<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+		<div class="section aboutPage test">
+			<img src="../res/logo.png" alt="Whitespace" style="width:200px;height:200px">
+			<h1>About</h1>
+		</div>
 
-  <!--Import jQuery before materialize.js-->
-  <script type="text/javascript" src="libs/jquery/jquery-3.1.1.min.js"></script>
-  <!-- Compiled and minified JavaScript -->
-  <script type="text/javascript" src="libs/materialize/js/materialize.js"></script>
-  <!-- Own JS just for design-->
-  <script type="text/javascript" src="index-design.js"></script>
+	</div>
 
-  <!--This is the code for all whitespcace calculations-->
-  <script type="text/javascript" src="libs/whitespace/whitespace.js"></script>
 
-  <!--This is the main code of this webapp-->
-  <script type="text/javascript" src="index.js"></script>
+	<!-- Insert this line above script imports (only for electron needed) -->
+	<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+	<!-- Import jquery-->
+	<script type="text/javascript" src="libs/jquery/jquery-3.1.1.min.js"></script>
+	<script src="libs/jquery-ui/jquery-ui.min.js"></script>
+	<!-- Import fullPage (used for the cool scrolling effect)-->
+	<script type="text/javascript" src="libs/fullPage/vendors/scrolloverflow.js"></script>
+	<script type="text/javascript" src="libs/fullPage/jquery.fullPage.js"></script>
+	<!-- Import own JS to improve the UI -->
+	<script type="text/javascript" src="index-design.js"></script>
+	<!--This is the code for all whitespcace calculations-->
+	<script type="text/javascript" src="libs/whitespace/whitespace.js"></script>
+	<!--This is the main code of this webapp-->
+	<script type="text/javascript" src="index.js"></script>
 
-  <!-- Insert this line after script imports -->
-<script>if (window.module) module = window.module;</script>
+	<!-- Insert this line after script imports -->
+	<script>if (window.module) module = window.module;</script>
 
 </body>
 </html>

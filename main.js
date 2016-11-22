@@ -7,6 +7,7 @@ app.on('ready', () =>
   if (process.argv[2] === '--test')
   {
     var conf = {width: 1400, heigth: 600, icon: `file://${__dirname}/res/logo256.p`};
+    console.log("Starting Whitespace with Chrome DevTools.");
   }
   else
   {

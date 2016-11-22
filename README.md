@@ -36,7 +36,7 @@ However, the app isn't ready yet. So for example there is no support for droping
 You can review the app and write an [issue](https://github.com/flofriday/Whitespace/issues "Create a new issue") how I could improve Whitespace.
 Or you can work on one of the problems below.
 
-* [ ] Better UI (feel free to rewrite it from scratch)
+* [ ] Better UI and UX
 * [ ] Encode whole files
 * [ ] Add some encryptions
 * [ ] Create a html file with a whitespace message at the end (add this file to /example/)

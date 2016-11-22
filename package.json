@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/flofriday/Whitespace#readme",
   "dependencies": {
-    "electron": "^1.4.0"
+    "electron": "^1.4.0",
+    "rage-power": "^1.0.0"
   }
 }

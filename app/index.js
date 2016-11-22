@@ -1,16 +1,16 @@
 /*
 * Loading some components
 */
-var app = require('electron').remote;
-var dialog = app.dialog;
-var fs = require('fs');
+const app = require('electron').remote;
+const dialog = app.dialog;
+const fs = require('fs');
+const clipboard = require('electron').clipboard;
 
 /*
 * Grabbing some elements by their IDs
 */
 var inputTextElement = document.getElementById('textareaInput');
 var outputTextElement = document.getElementById('textareaOutput');
-var executeElement = document.getElementById('btnExecute');
 var saveElement = document.getElementById('btnSave');
 var copyElement = document.getElementById('btnCopy');
 var exchangeElement = document.getElementById('btnExchange');
@@ -30,11 +30,20 @@ var visualWhitespace = 1;
 */
 function outputToClipboard()
 {
-  if(visualWhitespace === 1){unvisualizeWhitespaceCharacters.call(this, outputTextElement.value, outputTextElement);}  //replace visual Characters with orginial Whitespaces if needed
+  if (exchanged === 0)
+  {
+    clipboard.writeText(toWhitespace(inputTextElement.value));
+  }
+  else
+  {
+    clipboard.writeText(fromWhitespace(inputTextElement.value));
+  }
+  /*if(visualWhitespace === 1){unvisualizeWhitespaceCharacters.call(this, outputTextElement.value, outputTextElement);}  //replace visual Characters with orginial Whitespaces if needed
   outputTextElement.select(); //select the content of the textarea
   document.execCommand("copy"); //execute the copy command
   window.getSelection().empty();  //select nothing
   if(visualWhitespace === 1){visualizeWhitespaceCharacters.call(this, outputTextElement.value, outputTextElement);}  //replace real whitespace characters with visual Characters
+  */
 }
 
 
@@ -51,19 +60,19 @@ function saveOutputContent()
 
   //create a save dialog (code from http://ourcodeworld.com/articles/read/106/how-to-choose-read-save-delete-or-create-a-file-with-electron-framework)
   dialog.showSaveDialog(function (fileName) {
-       if (fileName === undefined){
-            console.log("You didn't save the file");
-            return;
-       }
-       // fileName is a string that contains the path and filename created in the save file dialog.
-       fs.writeFile(fileName, content, function (err) {
-           if(err){
-               alert("An error ocurred creating the file "+ err.message)
-           }
+    if (fileName === undefined){
+      console.log("You didn't save the file");
+      return;
+    }
+    // fileName is a string that contains the path and filename created in the save file dialog.
+    fs.writeFile(fileName, content, function (err) {
+      if(err){
+        alert("An error ocurred creating the file "+ err.message)
+      }
 
-           alert("The file has been succesfully saved");
-       });
-});
+      alert("The file has been succesfully saved");
+    });
+  });
 }
 
 
@@ -137,11 +146,9 @@ function exchangeHTML()
   if (exchanged === 0)
   {
     exchanged = 1;
-    executeElement.innerHTML = "decode to text";
   }
   else {
     exchanged = 0;
-    executeElement.innerHTML = "encode to whitespaces";
   }
 
   swap = leftHeaderElement.innerHTML;
@@ -155,7 +162,6 @@ function exchangeHTML()
 //creating some EventListener
 inputTextElement.addEventListener("input", updateOutputElement);  //if the normal input changes
 inputTextElement.addEventListener("keydown", updateOutputElement);  //tabs aren't handeled as normal input so I have also to listen to a keydown event.
-executeElement.addEventListener("click", updateOutputElement);
 copyElement.addEventListener("click", outputToClipboard);
 saveElement.addEventListener("click", saveOutputContent);
 exchangeElement.addEventListener("click", exchangeHTML);
