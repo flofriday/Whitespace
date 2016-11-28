@@ -32,8 +32,8 @@ However, the app isn't ready yet. So for example there is no support for droping
 1. [Install node](https://nodejs.org/en/download/ "Go to the node website.") if you haven't done yet.
 2. [Download](https://github.com/flofriday/Whitespace/archive/master.zip) this project and unzip it.
 3. Open a terminal in the unziped folder.
-4. Install [electron](http://electron.atom.io/) by typing `npm i electron-prebuilt`.
-5. To start the app type `npm start`. You can also type npm test to open also the Chrome DevTools
+4. Install all packages by typing `npm install`.
+5. To start the app type `npm start`. You can also type `npm test` to open also the Chrome DevTools
 
 
 ## How can I help?
@@ -44,4 +44,5 @@ Or you can work on one of the problems below.
 * [ ] Encode whole files
 * [ ] Add some encryptions
 * [ ] Create a html file with a whitespace message at the end (add this file to /example/)
+* [ ] Create some example files where you show where you use Whitespace.
 
