@@ -11,11 +11,15 @@ $(document).ready(function() {
   $('#fullpage').fullpage({
     sectionsColor: ['whitesmoke', '#939FAA', '#323539'],
     anchors: ['Main', 'Settings', 'About'],
-    css3: false,
+    css3: true,
     normalScrollElements: "textarea",  //So scrolling inside the textarea won't effect the autoscrolling of fullPage.js
-    navigation: true,
     autoScrolling: true,
-    navigationPosition: 'right'
+    scrollingSpeed: 800,
+    navigationPosition: 'right',
+
+       afterLoad: function(anchorLink, index){
+         $('#demo').focus();
+    }
   });
 });
 
@@ -60,3 +64,22 @@ $("textarea").keydown(function(e) {
     return false;
   }
 });
+
+
+/*
+* This code will effect all links in this app.
+* So this links will be opened by the OS default browser and not inside my app
+*/
+const shell = require('electron').shell
+
+const links = document.querySelectorAll('a[href]')
+
+Array.prototype.forEach.call(links, function (link) {
+  const url = link.getAttribute('href')
+  if (url.indexOf('http') === 0) {
+    link.addEventListener('click', function (e) {
+      e.preventDefault()
+      shell.openExternal(url)
+    })
+  }
+})

@@ -1,6 +1,8 @@
 const electron = require('electron');
 const {app, BrowserWindow} = electron;
 
+
+
 app.on('ready', () =>
 {
   //generate a bigger window for testing because the Chrome DevTools waste a lot of space

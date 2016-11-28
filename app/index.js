@@ -5,6 +5,8 @@ const app = require('electron').remote;
 const dialog = app.dialog;
 const fs = require('fs');
 const clipboard = require('electron').clipboard;
+const {remote} = require('electron')
+const {Menu, MenuItem} = remote
 
 /*
 * Grabbing some elements by their IDs
@@ -38,14 +40,24 @@ function outputToClipboard()
   {
     clipboard.writeText(fromWhitespace(inputTextElement.value));
   }
-  /*if(visualWhitespace === 1){unvisualizeWhitespaceCharacters.call(this, outputTextElement.value, outputTextElement);}  //replace visual Characters with orginial Whitespaces if needed
-  outputTextElement.select(); //select the content of the textarea
-  document.execCommand("copy"); //execute the copy command
-  window.getSelection().empty();  //select nothing
-  if(visualWhitespace === 1){visualizeWhitespaceCharacters.call(this, outputTextElement.value, outputTextElement);}  //replace real whitespace characters with visual Characters
-  */
 }
 
+
+/*
+* This function copies the value of the clipboard into the inputTextElement
+*/
+function clipboardToInput()
+{
+  inputTextElement.value = `${clipboard.readText()}`;
+  updateOutputElement.call();
+}
+
+
+function clearInputContent()
+{
+  inputTextElement.value="";
+  updateOutputElement.call();
+}
 
 
 /*
@@ -146,9 +158,11 @@ function exchangeHTML()
   if (exchanged === 0)
   {
     exchanged = 1;
+    $('#inputTextElement').attr('placeholder','Paste some encoded text here.');
   }
   else {
     exchanged = 0;
+    $('#inputTextElement').attr('placeholder','Start typing to get hidden text.');
   }
 
   swap = leftHeaderElement.innerHTML;
@@ -162,6 +176,32 @@ function exchangeHTML()
 //creating some EventListener
 inputTextElement.addEventListener("input", updateOutputElement);  //if the normal input changes
 inputTextElement.addEventListener("keydown", updateOutputElement);  //tabs aren't handeled as normal input so I have also to listen to a keydown event.
-copyElement.addEventListener("click", outputToClipboard);
-saveElement.addEventListener("click", saveOutputContent);
-exchangeElement.addEventListener("click", exchangeHTML);
+//copyElement.addEventListener("click", outputToClipboard);
+//saveElement.addEventListener("click", saveOutputContent);
+//exchangeElement.addEventListener("click", exchangeHTML);
+
+
+
+/*
+* This code creates a Chrome contextmenu.
+* This menu is available on all Pages of the window which is not totally optimal
+* so I will probably replace this code afterwards.
+*/
+const menu = new Menu();
+menu.append(new MenuItem({label: 'Change', click() { exchangeHTML.call(); }}));
+menu.append(new MenuItem({type: 'separator'}));
+menu.append(new MenuItem({label: 'Output To Clipboard', click() { outputToClipboard.call(); }}));
+menu.append(new MenuItem({label: 'Clipboard To Input', click() { clipboardToInput.call(); }}));
+menu.append(new MenuItem({label: 'Clear Input', click() { clearInputContent.call(); }}));
+menu.append(new MenuItem({type: 'separator'}));
+menu.append(new MenuItem({label: 'Save As', click() { saveOutputContent.call(); }}));
+menu.append(new MenuItem({type: 'separator'}));
+menu.append(new MenuItem({label: 'Main', click() { window.location.href = "#Main" }}));
+menu.append(new MenuItem({label: 'Settings', click() { window.location.href = "#Settings" }}));
+menu.append(new MenuItem({label: 'About', click() { window.location.href = "#About" }}));
+
+
+window.addEventListener('contextmenu', (e) => {
+  e.preventDefault();
+  menu.popup(remote.getCurrentWindow());
+}, false);

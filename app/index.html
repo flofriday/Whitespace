@@ -15,9 +15,10 @@
 	<div id="fullpage">
 
 		<div class="section active" id="mainPage">
-			<h1>Main Screen</h1>
-			<textarea id="textareaInput" class="leftside" placeholder="Start typing to get hidden text."></textarea>
-			<textarea id="textareaOutput" class="rightside"></textarea>
+			<h1 id="leftheader" class="leftside">Text</h1>
+			<h1 id="rightheader" class="rightside">Code</h1>
+			<textarea autofocus id="textareaInput" class="leftside" placeholder="Start typing to get hidden text."></textarea>
+			<textarea id="textareaOutput" class="rightside" readonly></textarea>
 		</div>
 
 
@@ -27,8 +28,10 @@
 
 
 		<div class="section aboutPage test">
-			<img src="../res/logo.png" alt="Whitespace" style="width:200px;height:200px">
-			<h1>About</h1>
+			<img class="leftmidd" src="../res/logo.png" alt="Whitespace" style="width:200px;height:200px">
+			<h2>Version: 0.0.2</h2>
+			<h2>Author: <a href="https://www.github.com/flofriday">flofriday</a></h2>
+
 		</div>
 
 	</div>
@@ -51,6 +54,7 @@
 
 	<!-- Insert this line after script imports -->
 	<script>if (window.module) module = window.module;</script>
+
 
 </body>
 </html>

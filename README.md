@@ -1,11 +1,13 @@
 # Whitespace
 ~~What you see is what you get.~~
 
+Built with [Electron](http://electron.atom.io/). 
+
+Download a [release](https://github.com/flofriday/Whitespace/releases).
+
 ![Test](screenshots/homescreen.png)
 ## What is Whitespace?
 The most secure way to communicate would be if nobody knows that two people are communicating. Since this is impossible you can just try to hide the message. This technology is called [Steganography](https://en.wikipedia.org/wiki/Steganography "Wikipeda about Steganography"). Whitespace helps you to hide messages, by encoding them to a "code" which just contains invisible characters (Space, Tab, Linefeed). So every encoded file seems to be blank. 
-
-Whitespace is build with [electron](http://electron.atom.io/). 
 
 ## How to use
 Encoding isn't really save so you sould only hide encrypted messages if you want that your messages are secure. 
@@ -17,7 +19,9 @@ You can also add the whitespaces at the end of a code file like HTML, CSS or JS.
 ## What is the current state?
 This Software is currently in alpha. At its core Whitespace works just fine, so you can encode text to whitespaces and also decode it.
 
-However, the app isn't ready yet. So for example there is no support for droping files or to encrypt the text and at the moment the app is also really ugly.
+However, the app isn't ready yet. So for example there is no support for droping files or to encrypt the text. Also the UI isn't perfect but I'm working hard to create a nice Interface.
+
+
 
 ## How to install?
 1. [Download](https://github.com/flofriday/Whitespace/releases/tag/v0.0.1-alpha) the rigth binary for your Computer.
@@ -28,7 +32,7 @@ However, the app isn't ready yet. So for example there is no support for droping
 1. [Install node](https://nodejs.org/en/download/ "Go to the node website.") if you haven't done yet.
 2. [Download](https://github.com/flofriday/Whitespace/archive/master.zip) this project and unzip it.
 3. Open a terminal in the unziped folder.
-4. Install [electron](http://electron.atom.io/) by typing `npm install`.
+4. Install [electron](http://electron.atom.io/) by typing `npm i electron-prebuilt`.
 5. To start the app type `npm start`. You can also type npm test to open also the Chrome DevTools
 
 
