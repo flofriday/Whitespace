@@ -1,0 +1,8 @@
+{
+  "name": "whitespace.js",
+  "version": "1.0.0",
+  "description": "A JavaScript libary to hide text.",
+  "main": "whitespace.js",
+  "author": "flofriday",
+  "license": "MIT"
+}

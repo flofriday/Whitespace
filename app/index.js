@@ -13,9 +13,9 @@ const {Menu, MenuItem} = remote
 */
 var inputTextElement = document.getElementById('textareaInput');
 var outputTextElement = document.getElementById('textareaOutput');
-var saveElement = document.getElementById('btnSave');
-var copyElement = document.getElementById('btnCopy');
-var exchangeElement = document.getElementById('btnExchange');
+//var saveElement = document.getElementById('btnSave');
+//var copyElement = document.getElementById('btnCopy');
+//var exchangeElement = document.getElementById('btnExchange');
 var leftHeaderElement = document.getElementById('leftheader');
 var rightHeaderElement = document.getElementById('rightheader');
 
@@ -53,6 +53,9 @@ function clipboardToInput()
 }
 
 
+/*
+* This function clears the input Textarea.
+*/
 function clearInputContent()
 {
   inputTextElement.value="";
@@ -66,9 +69,7 @@ function clearInputContent()
 function saveOutputContent()
 {
   //creating the content which will be in the file.
-  if(visualWhitespace === 1){unvisualizeWhitespaceCharacters.call(this, outputTextElement.value, outputTextElement);}  //replace visual Characters with orginial Whitespaces if needed
-  var content = outputTextElement.value;  //copy the textarea content into this variable
-  if(visualWhitespace === 1){visualizeWhitespaceCharacters.call(this, outputTextElement.value, outputTextElement);}  //replace real whitespace characters with visual Characters
+  var content = toWhitespace(inputTextElement.value);  //copy the textarea content into this variable
 
   //create a save dialog (code from http://ourcodeworld.com/articles/read/106/how-to-choose-read-save-delete-or-create-a-file-with-electron-framework)
   dialog.showSaveDialog(function (fileName) {
@@ -89,45 +90,6 @@ function saveOutputContent()
 
 
 /*
-* Since Whitespaces can't be seen by humans (Thats the point of this project)
-* The app has to figure out another way to show the user that the text is
-* encoded. And thats exactly what this function is doing.
-*/
-function visualizeWhitespaceCharacters(content, textarea)
-{
-  //replace all Whitespaces with S(Space), T(Tab) and L(Linefeed)
-  for (var i = 0; i < content.length; i++)
-  {
-    if (content.charAt(i) === ' '){content = content.replaceAt(i, String.fromCharCode(183));}
-    else if (content.charAt(i) === '\t'){content = content.replaceAt(i, '>');}
-    else if (content.charAt(i) === '\n'){content = content.replaceAt(i, String.fromCharCode(182));}
-  }
-
-  //update the textarea
-  textarea.innerHTML = content;
-}
-
-
-/*
-* This function has the reversed effect than the visualizeWhitespaceCharacters
-* function
-*/
-function unvisualizeWhitespaceCharacters(content, textarea)
-{
-  //replace all Whitespaces with S(Space), T(Tab) and L(Linefeed)
-  for (var i = 0; i < content.length; i++)
-  {
-    if (content.charAt(i) === String.fromCharCode(183)){content = content.replaceAt(i, ' ');}
-    else if (content.charAt(i) === '>'){content = content.replaceAt(i, '\t');}
-    else if (content.charAt(i) === String.fromCharCode(182)){content = content.replaceAt(i, '\n');}
-  }
-
-  //update the textarea
-  textarea.innerHTML = content;
-}
-
-
-/*
 * This function checks if the app has to encode to Whitespace or from Whitespace
 * After that it also updates the Output textarea with the encoded or decoded
 * characters
@@ -136,13 +98,13 @@ function updateOutputElement()
 {
   if (exchanged === 0)
   {
-    if (visualWhitespace === 1){visualizeWhitespaceCharacters.call(this, toWhitespace(inputTextElement.value), outputTextElement);}
+    if (visualWhitespace === 1){ outputTextElement.innerHTML = toVisualWhitespace(inputTextElement.value); }
     else {outputTextElement.innerHTML = toWhitespace(inputTextElement.value);}
   }
   else
   {
     outputTextElement.innerHTML = fromWhitespace(inputTextElement.value);
-    //if (visualWhitespace === 1){visualizeWhitespaceCharacters.call(this, fromWhitespace(inputTextElement.value), inputTextElement);}
+    //if (visualWhitespace === 1){fromVisualWhitespace(inputTextElement.value)}
   }
 }
 
@@ -158,11 +120,11 @@ function exchangeHTML()
   if (exchanged === 0)
   {
     exchanged = 1;
-    $('#inputTextElement').attr('placeholder','Paste some encoded text here.');
+    $('#textareaInput').attr('placeholder','Paste some encoded text here.');
   }
   else {
     exchanged = 0;
-    $('#inputTextElement').attr('placeholder','Start typing to get hidden text.');
+    $('#textareaInput').attr('placeholder','Start typing to get hidden text.');
   }
 
   swap = leftHeaderElement.innerHTML;
@@ -173,7 +135,9 @@ function exchangeHTML()
 }
 
 
-//creating some EventListener
+/*
+* creating some EventListener
+*/
 inputTextElement.addEventListener("input", updateOutputElement);  //if the normal input changes
 inputTextElement.addEventListener("keydown", updateOutputElement);  //tabs aren't handeled as normal input so I have also to listen to a keydown event.
 //copyElement.addEventListener("click", outputToClipboard);

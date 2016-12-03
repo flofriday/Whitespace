@@ -1,6 +1,6 @@
 /**
 * This file contais some custom JS code to make some simple animations or to
-* change the design.
+* change the design or to make the Interface working.
 */
 
 
@@ -17,8 +17,8 @@ $(document).ready(function() {
     scrollingSpeed: 800,
     navigationPosition: 'right',
 
-       afterLoad: function(anchorLink, index){
-         $('#demo').focus();
+    afterLoad: function(anchorLink, index){
+      $('#demo').focus();
     }
   });
 });

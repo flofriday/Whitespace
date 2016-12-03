@@ -1,11 +1,12 @@
 # Whitespace
 ~~What you see is what you get.~~
 
-Built with [Electron](http://electron.atom.io/). 
+Built with [Electron](http://electron.atom.io/ "Click to learn more about Electron"). 
 
-Download a [release](https://github.com/flofriday/Whitespace/releases).
+Download a [release](https://github.com/flofriday/Whitespace/releases "Click to see all releases.").
 
-![Test](screenshots/homescreen.png)
+![Test](screenshots/v0.0.2/Mainscreen_filled.png)
+[More screenshots](screenshots/v0.0.2/Screenshots.md).
 ## What is Whitespace?
 The most secure way to communicate would be if nobody knows that two people are communicating. Since this is impossible you can just try to hide the message. This technology is called [Steganography](https://en.wikipedia.org/wiki/Steganography "Wikipeda about Steganography"). Whitespace helps you to hide messages, by encoding them to a "code" which just contains invisible characters (Space, Tab, Linefeed). So every encoded file seems to be blank. 
 
@@ -16,7 +17,7 @@ Since normal characters will be ignored by the alogrithm you can write text betw
 
 You can also add the whitespaces at the end of a code file like HTML, CSS or JS. 
 
-## What is the current state?
+## State?
 This Software is currently in alpha. At its core Whitespace works just fine, so you can encode text to whitespaces and also decode it.
 
 However, the app isn't ready yet. So for example there is no support for droping files or to encrypt the text. Also the UI isn't perfect but I'm working hard to create a nice Interface.
@@ -38,11 +39,5 @@ However, the app isn't ready yet. So for example there is no support for droping
 
 ## How can I help?
 You can review the app and write an [issue](https://github.com/flofriday/Whitespace/issues "Create a new issue") how I could improve Whitespace.
-Or you can work on one of the problems below.
-
-* [ ] Better UI and UX
-* [ ] Encode whole files
-* [ ] Add some encryptions
-* [ ] Create a html file with a whitespace message at the end (add this file to /example/)
-* [ ] Create some example files where you show where you use Whitespace.
+Or you can work on one of these [problems](TODO.md "TODO.md").
 

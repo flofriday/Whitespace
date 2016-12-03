@@ -1,18 +1,16 @@
 /*
-* WHITESPACE
+* WHITESPACE.js
 *  ~what you see is what you get~
 *
 * This file is a libary to encode a text to a whitespace-only text. This text
-* can't be seen by human eyes (because it just contains tranparent characters).
+* can't be seen by human eyes (because it just contains tranparent characters)
+*
+* The decode Algorithm ingnores all characters exept white spaces. So you can
+* have some text between the whitespaces.
 *
 * I had written this code some while ago, however it was written in C++ and so
 * I had to port it to java script.
 */
-
-//Initialize some variables about this libary
-const WHITESPACE_LIB_VERSION = 0.1;
-const WHITESPACE_LIB_DATE = "30.10.2016";
-const WHITESPACE_LIB_AUTHOR = "flofriday (www.github.com/flofriday)";
 
 
 /*
@@ -25,6 +23,12 @@ String.prototype.replaceAt=function(index, character)
 }
 
 
+/*
+* This function has a string as an input and it will also output a string.
+* The input should be the text it can be also encrypted because the function
+* really doesn't care.
+* However, the output is the input string encoded to Whitespace.
+*/
 function toWhitespace(input)
 {
   //define all variables
@@ -70,6 +74,14 @@ function toWhitespace(input)
 }
 
 
+/*
+* This function is the decoder. It will show you the original text.
+* Exactly as the encoder the input and the output are both strings.
+*
+* As you may have read above the decoder will ignore all characters, exept
+* white-spaces. So feel free to give this function a string with some text between
+* the white-spaces.
+*/
 function fromWhitespace(input)
 {
   //define all variables
@@ -80,12 +92,11 @@ function fromWhitespace(input)
 
   //clear input string from none Whitespace characters.
   var swap = "";
-  for (i = 0, j = 0; i < input.length; i++)
+  for (i = 0; i < input.length; i++)
   {
     if (input.charAt(i) === ' ' || input.charAt(i) === '\t' || input.charAt(i) === '\n')
     {
       swap += input.charAt(i);
-      j++;
     }
   }
   input = swap;
@@ -130,4 +141,60 @@ function fromWhitespace(input)
     output += String.fromCharCode(dec);
   }
   return output;
+}
+
+
+/*
+* This function is exactly like the normal toWhitespace function.
+* The only difference is that this function doesn't encode to
+* space, tab and linefeed but it encodes to characters that you can see.
+* Instead of space it uses '·'
+* Instead of tab it uses '>'
+* Instead of a linefeed it uses '¶'
+*/
+function toVisualWhitespace(input)
+{
+  //encode the whole input string to white-spaces
+  var content = toWhitespace(input);
+
+  //Replace the white-spaces with visual characterss
+  for (var i = 0; i < content.length; i++)
+  {
+    if (content.charAt(i) === ' '){content = content.replaceAt(i, String.fromCharCode(183));}
+    else if (content.charAt(i) === '\t'){content = content.replaceAt(i, '>');}
+    else if (content.charAt(i) === '\n'){content = content.replaceAt(i, String.fromCharCode(182));}
+  }
+
+  //return the visual Whitespace Code
+  return content;
+}
+
+
+/*
+* This function works exactly like the normal decoder function (fromWhitespace).
+* However, it uses visual white-spaces instead of real white-spaces ... you
+* can read about visual whitespaces in the comment above the function toVisualWhitespace
+*/
+function fromVisualWhitespace(input)
+{
+  //clear input string from none visual white-space characters.
+  var content = "";
+  for (i = 0; i < input.length; i++)
+  {
+    if (input.charAt(i) === String.fromCharCode(183) || input.charAt(i) === '>' || input.charAt(i) === String.fromCharCode(182))
+    {
+      content += input.charAt(i);
+    }
+  }
+
+  //replace visual white-space characters with real white-spaces
+  for (var i = 0; i < content.length; i++)
+  {
+    if (content.charAt(i) === String.fromCharCode(183)){content = content.replaceAt(i, ' ');}
+    else if (content.charAt(i) === '>'){content = content.replaceAt(i, '\t');}
+    else if (content.charAt(i) === String.fromCharCode(182)){content = content.replaceAt(i, '\n');}
+  }
+
+  //return the original text
+  return fromWhitespace(content);
 }
