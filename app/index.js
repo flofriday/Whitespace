@@ -13,11 +13,14 @@ const {Menu, MenuItem} = remote
 */
 var inputTextElement = document.getElementById('textareaInput');
 var outputTextElement = document.getElementById('textareaOutput');
-//var saveElement = document.getElementById('btnSave');
-//var copyElement = document.getElementById('btnCopy');
-//var exchangeElement = document.getElementById('btnExchange');
+var saveElement = document.getElementById('btnSave');
+var copyElement = document.getElementById('btnCopy');
+var pasteElement = document.getElementById('btnPaste');
+var clearElement = document.getElementById('btnClear');
+var exchangeElement = document.getElementById('btnExchange');
 var leftHeaderElement = document.getElementById('leftheader');
 var rightHeaderElement = document.getElementById('rightheader');
+
 
 //defining some global variables
 var exchanged = 0;  //this variable describes if the code has to encode or has to decode.
@@ -140,9 +143,11 @@ function exchangeHTML()
 */
 inputTextElement.addEventListener("input", updateOutputElement);  //if the normal input changes
 inputTextElement.addEventListener("keydown", updateOutputElement);  //tabs aren't handeled as normal input so I have also to listen to a keydown event.
-//copyElement.addEventListener("click", outputToClipboard);
-//saveElement.addEventListener("click", saveOutputContent);
-//exchangeElement.addEventListener("click", exchangeHTML);
+copyElement.addEventListener("click", outputToClipboard);
+pasteElement.addEventListener("click", clipboardToInput)
+saveElement.addEventListener("click", saveOutputContent);
+clearElement.addEventListener("click", clearInputContent);
+exchangeElement.addEventListener("click", exchangeHTML);
 
 
 
@@ -154,8 +159,8 @@ inputTextElement.addEventListener("keydown", updateOutputElement);  //tabs aren'
 const menu = new Menu();
 menu.append(new MenuItem({label: 'Change', click() { exchangeHTML.call(); }}));
 menu.append(new MenuItem({type: 'separator'}));
-menu.append(new MenuItem({label: 'Output To Clipboard', click() { outputToClipboard.call(); }}));
-menu.append(new MenuItem({label: 'Clipboard To Input', click() { clipboardToInput.call(); }}));
+menu.append(new MenuItem({label: 'Copy Output', click() { outputToClipboard.call(); }}));
+menu.append(new MenuItem({label: 'Paste Input', click() { clipboardToInput.call(); }}));
 menu.append(new MenuItem({label: 'Clear Input', click() { clearInputContent.call(); }}));
 menu.append(new MenuItem({type: 'separator'}));
 menu.append(new MenuItem({label: 'Save As', click() { saveOutputContent.call(); }}));

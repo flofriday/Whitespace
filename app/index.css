@@ -59,23 +59,58 @@ h1.rightside{
 }
 
 .rightmidd{
-	/*float: right;
-	position: relative;
-	left: clac(50% + 10px);
-
-	padding: 0;*/
+	position: absolute;
+	/*float: right;*/
+	left: calc(50%);
+	padding: 0;
 }
 
 .leftmidd{
-	position: relative;
-	float: right;
-	/*right: calc(50%);*/
+	position: absolute;
+	/*float: right;*/
+	right: calc(50%);
 	padding: 0;
 }
 
 .verticalCenter{
 	vertical-align: middle;
 }
+
+
+.myButton{
+	font-size: 110%;
+}
+
+#btnClear{
+	position: absolute;;
+	left: 5px;
+	bottom: 8px;
+}
+
+#btnSave{
+	position: absolute;;
+	right: 5px;
+	bottom: 8px;
+}
+
+#btnPaste{
+	position: absolute;;
+	left: 60px;
+	bottom: 8px;
+}
+
+#btnCopy{
+	position: absolute;;
+	right: 60px;
+	bottom: 8px;
+}
+
+#btnExchange{
+	position: absolute;;
+	right: calc(50% - 28px);
+	bottom: 8px;
+}
+
 
 textarea{
 	resize: none;
@@ -89,7 +124,7 @@ textarea{
 
 	box-sizing: border-box;
 	width: calc(50% - 30px);
-	height: calc(100% - 185px);
+	height: calc(100% - 148px);
 }
 
 #textareaOutput{
