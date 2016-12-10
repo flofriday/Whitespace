@@ -7,5 +7,6 @@
 
 ## Features
 * [ ] Make the About screen look better
-* [ ] Better looking scrollbars in the textareas. (For example with [Antiscroll](https://github.com/Automattic/antiscroll)
 * [ ] Autofocus the input textarea
+* [ ] Encrypt the text
+* [ ] More Outputs when app is started with CLI
