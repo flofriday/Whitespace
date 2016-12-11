@@ -25,7 +25,7 @@ However, the app isn't ready yet. So for example there is no support for droping
 
 
 ## How to install?
-1. [Download](https://github.com/flofriday/Whitespace/releases/tag/v0.0.1-alpha) the rigth binary for your Computer.
+1. [Download](https://github.com/flofriday/Whitespace/releases/tag/v0.0.2-alpha) the rigth binary for your Computer.
 2. Unzip the downloaded folder.
 3. Start the executeable.
 
