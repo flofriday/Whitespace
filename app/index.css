@@ -31,6 +31,9 @@ html *{
 	color: white;
 }
 
+h1, h2, h3{
+	cursor: default;
+}
 
 .settingPage h1, .aboutPage h1, .settingPage h2, .aboutPage h2, .settingPage h3, .aboutPage h3{
 	color: white;
@@ -79,29 +82,36 @@ h1.rightside{
 
 .myButton{
 	font-size: 110%;
+	cursor: pointer;
 }
 
 #btnClear{
-	position: absolute;;
-	left: 5px;
-	bottom: 8px;
-}
-
-#btnSave{
-	position: absolute;;
-	right: 5px;
+	position: absolute;
+	left: 0px;
 	bottom: 8px;
 }
 
 #btnPaste{
-	position: absolute;;
-	left: 60px;
+	position: absolute;
+	left: 50px;
+	bottom: 8px;
+}
+
+#btnOpen{
+	position: absolute;
+	left: 100px;
 	bottom: 8px;
 }
 
 #btnCopy{
-	position: absolute;;
-	right: 60px;
+	position: absolute;
+	right: 50px;
+	bottom: 8px;
+}
+
+#btnSave{
+	position: absolute;
+	right: 0px;
 	bottom: 8px;
 }
 

@@ -9,4 +9,6 @@
 * [ ] Make the About screen look better
 * [ ] Autofocus the input textarea
 * [ ] Encrypt the text
-* [ ] More Outputs when app is started with CLI
+* [ ] More Outputs when the app is started with CLI
+* [ ] Inject code in existing files
+* [ ] Notifications. For example to show the user that the file was saved successfully.

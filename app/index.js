@@ -5,8 +5,9 @@ const app = require('electron').remote;
 const dialog = app.dialog;
 const fs = require('fs');
 const clipboard = require('electron').clipboard;
-const {remote} = require('electron')
-const {Menu, MenuItem} = remote
+const {remote} = require('electron');
+const {Menu, MenuItem} = remote;
+const ipc = require('electron').ipcRenderer;
 
 /*
 * Grabbing some elements by their IDs
@@ -14,6 +15,7 @@ const {Menu, MenuItem} = remote
 var inputTextElement = document.getElementById('textareaInput');
 var outputTextElement = document.getElementById('textareaOutput');
 var saveElement = document.getElementById('btnSave');
+var openElement = document.getElementById('btnOpen');
 var copyElement = document.getElementById('btnCopy');
 var pasteElement = document.getElementById('btnPaste');
 var clearElement = document.getElementById('btnClear');
@@ -52,7 +54,7 @@ function outputToClipboard()
 function clipboardToInput()
 {
   inputTextElement.value = `${clipboard.readText()}`;
-  updateOutputElement.call();
+  updateOutputElement();
 }
 
 
@@ -62,14 +64,14 @@ function clipboardToInput()
 function clearInputContent()
 {
   inputTextElement.value="";
-  updateOutputElement.call();
+  updateOutputElement();
 }
 
 
 /*
 * This function opens a Save dialog and saves the whitespace code into a new file.
 */
-function saveOutputContent()
+function saveOutputFile()
 {
   //creating the content which will be in the file.
   var content = toWhitespace(inputTextElement.value);  //copy the textarea content into this variable
@@ -93,6 +95,33 @@ function saveOutputContent()
 
 
 /*
+* This function opens a dialog in which you can select a textfile. The content
+* of the selected file will appear in the input Textarea.
+*
+* This function is mainly copied from: http://mylifeforthecode.com/getting-started-with-standard-dialogs-in-electron/
+*/
+function openInputFile()
+{
+
+  dialog.showOpenDialog(function (fileNames) {
+
+    if (fileNames === undefined) return;
+
+    var fileName = fileNames[0];
+
+    fs.readFile(fileName, 'utf-8', function (err, data) {
+
+      inputTextElement.value = data;
+      updateOutputElement(); //update the content of the output Textarea
+
+    });
+
+  });
+
+}
+
+
+/*
 * This function checks if the app has to encode to Whitespace or from Whitespace
 * After that it also updates the Output textarea with the encoded or decoded
 * characters
@@ -106,20 +135,19 @@ function updateOutputElement()
   }
   else
   {
-    outputTextElement.innerHTML = fromWhitespace(inputTextElement.value);
-    //if (visualWhitespace === 1){fromVisualWhitespace(inputTextElement.value)}
+    outputTextElement.innerHTML = fromWhitespace(inputTextElement.value)
   }
 }
 
 
 /*
-* This function changes the interface so that you can also decode.
+* This function changes the interface so you can change between encode and decode.
 */
 function exchangeHTML()
 {
   var swap; //this variable is only used in this function to save strings for a short time
 
-  //change the text based on
+  //change the placeholder text
   if (exchanged === 0)
   {
     exchanged = 1;
@@ -130,11 +158,12 @@ function exchangeHTML()
     $('#textareaInput').attr('placeholder','Start typing to get hidden text.');
   }
 
+  //change the headers
   swap = leftHeaderElement.innerHTML;
   leftHeaderElement.innerHTML = rightHeaderElement.innerHTML;
   rightHeaderElement.innerHTML = swap;
 
-  updateOutputElement.call();
+  updateOutputElement(); //update the content of the Output Textarea
 }
 
 
@@ -145,10 +174,14 @@ inputTextElement.addEventListener("input", updateOutputElement);  //if the norma
 inputTextElement.addEventListener("keydown", updateOutputElement);  //tabs aren't handeled as normal input so I have also to listen to a keydown event.
 copyElement.addEventListener("click", outputToClipboard);
 pasteElement.addEventListener("click", clipboardToInput)
-saveElement.addEventListener("click", saveOutputContent);
+saveElement.addEventListener("click", saveOutputFile);
+openElement.addEventListener("click", openInputFile);
 clearElement.addEventListener("click", clearInputContent);
 exchangeElement.addEventListener("click", exchangeHTML);
-
+window.addEventListener('contextmenu', (e) => {
+  e.preventDefault();
+  menu.popup(remote.getCurrentWindow());
+}, false);
 
 
 /*
@@ -157,20 +190,15 @@ exchangeElement.addEventListener("click", exchangeHTML);
 * so I will probably replace this code afterwards.
 */
 const menu = new Menu();
-menu.append(new MenuItem({label: 'Change', click() { exchangeHTML.call(); }}));
+menu.append(new MenuItem({label: 'Change', click() { exchangeHTML(); }}));
 menu.append(new MenuItem({type: 'separator'}));
-menu.append(new MenuItem({label: 'Copy Output', click() { outputToClipboard.call(); }}));
-menu.append(new MenuItem({label: 'Paste Input', click() { clipboardToInput.call(); }}));
-menu.append(new MenuItem({label: 'Clear Input', click() { clearInputContent.call(); }}));
+menu.append(new MenuItem({label: 'Copy Output', click() { outputToClipboard(); }}));
+menu.append(new MenuItem({label: 'Paste Input', click() { clipboardToInput(); }}));
+menu.append(new MenuItem({label: 'Clear Input', click() { clearInputContent(); }}));
 menu.append(new MenuItem({type: 'separator'}));
-menu.append(new MenuItem({label: 'Save As', click() { saveOutputContent.call(); }}));
+menu.append(new MenuItem({label: 'Save As', click() { saveOutputFile(); }}));
+menu.append(new MenuItem({label: 'Open File', click(){ openInputFile(); }}))
 menu.append(new MenuItem({type: 'separator'}));
 menu.append(new MenuItem({label: 'Main', click() { window.location.href = "#Main" }}));
 menu.append(new MenuItem({label: 'Settings', click() { window.location.href = "#Settings" }}));
 menu.append(new MenuItem({label: 'About', click() { window.location.href = "#About" }}));
-
-
-window.addEventListener('contextmenu', (e) => {
-  e.preventDefault();
-  menu.popup(remote.getCurrentWindow());
-}, false);
