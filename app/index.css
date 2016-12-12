@@ -15,6 +15,10 @@ html *{
 	height: 1%; /* this was 0, make it 1% */
 }
 
+.staticImage{
+pointer-events: none;
+}
+
 .section{
 	text-align:center;
 }
@@ -100,6 +104,12 @@ h1.rightside{
 #btnOpen{
 	position: absolute;
 	left: 100px;
+	bottom: 8px;
+}
+
+#btnInject{
+	position: absolute;
+	right: 100px;
 	bottom: 8px;
 }
 

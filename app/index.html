@@ -20,11 +20,12 @@
 			<textarea autofocus="autofocus" id="textareaInput" class="leftside" placeholder="Start typing to get hidden text."></textarea>
 			<textarea id="textareaOutput" class="rightside" readonly></textarea>
 			<a id="btnClear" class="myButton bottom leftside">Clear</a>
-			<a id="btnPaste" class="myButton bottom leftside">Paste</a>
 			<a id="btnOpen" class="myButton bottom leftside">Open</a>
-			<a id="btnSave" class="myButton bottom rightside">Save</a>
-			<a id="btnCopy" class="myButton bottom rightside">Copy</a>
+			<a id="btnPaste" class="myButton bottom leftside">Paste</a>
 			<a id="btnExchange" class="myButton bottom"> Change </a>
+			<a id="btnInject" class="myButton bottom rightside">Inject</a>
+			<a id="btnCopy" class="myButton bottom rightside">Copy</a>
+			<a id="btnSave" class="myButton bottom rightside">Save</a>
 		</div>
 
 		<div class="section settingPage test">
@@ -33,7 +34,7 @@
 
 
 		<div class="section aboutPage test">
-			<img class="leftmidd verticalCenter" src="../res/logo.png" alt="Whitespace" style="width:200px;height:200px">
+			<img class="leftmidd verticalCenter staticImage" src="../res/logo.png" alt="Whitespace" style="width:200px;height:200px">
 			<div class="rightmidd verticalCenter">
 			<h2>Version: 0.0.2</h2>
 			<h2>Author: <a href="https://www.github.com/flofriday">flofriday</a></h2>
@@ -46,7 +47,7 @@
 
 	<!-- Insert this line above script imports (only for electron needed) -->
 	<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
-	
+
 	<!-- Import jquery-->
 	<script type="text/javascript" src="libs/jquery/jquery-3.1.1.min.js"></script>
 	<script src="libs/jquery-ui/jquery-ui.min.js"></script>

@@ -4,6 +4,7 @@
 const app = require('electron').remote;
 const dialog = app.dialog;
 const fs = require('fs');
+const path = require('path');
 const clipboard = require('electron').clipboard;
 const {remote} = require('electron');
 const {Menu, MenuItem} = remote;
@@ -87,8 +88,12 @@ function saveOutputFile()
       if(err){
         alert("An error ocurred creating the file "+ err.message)
       }
+      else
+      {
+        alert("The file has been succesfully saved");
+      }
 
-      alert("The file has been succesfully saved");
+
     });
   });
 }
@@ -113,6 +118,57 @@ function openInputFile()
 
       inputTextElement.value = data;
       updateOutputElement(); //update the content of the output Textarea
+
+    });
+
+  });
+
+}
+
+
+/*
+* This function opens a file dialog where you should select a textfile.
+* In this textfile every white-spaces will be replaced by a Code-character
+* from the output code.
+* This function won't destroy the original file. It will make a copy with the
+* prefix "WS".
+* for example the file "test.txt" will create a injected file "WStest.txt"
+*/
+function injectOutputFile()
+{
+  //create some variables
+  var container;
+  var inputFile;
+  var outputFile;
+
+  //open the file dialog
+  dialog.showOpenDialog(function (fileNames)
+  {
+    if (fileNames === undefined) return;
+
+    inputFile = fileNames[0];
+
+    fs.readFile(inputFile, 'utf-8', function (err, data)
+    {
+      container = data;
+
+      //create the path of the output file
+      var a = path.dirname(inputFile);
+      var b = path.basename(inputFile);
+      outputFile = path.join(a, 'WS-' + b);
+
+      //write the content to the file
+      fs.writeFile(outputFile, injectWhitespace(inputTextElement.value, container), function (err) {
+        if(err)
+        {
+          alert("An error ocurred creating the file "+ err.message);
+        }
+        else
+        {
+          alert("The file has been succesfully saved");
+          console.log("The file is saved as: " + outputFile);
+        }
+      });
 
     });
 
@@ -197,7 +253,8 @@ menu.append(new MenuItem({label: 'Paste Input', click() { clipboardToInput(); }}
 menu.append(new MenuItem({label: 'Clear Input', click() { clearInputContent(); }}));
 menu.append(new MenuItem({type: 'separator'}));
 menu.append(new MenuItem({label: 'Save As', click() { saveOutputFile(); }}));
-menu.append(new MenuItem({label: 'Open File', click(){ openInputFile(); }}))
+menu.append(new MenuItem({label: 'Open File', click(){ openInputFile(); }}));
+menu.append(new MenuItem({label: 'Inject Code', click(){ injectOutputFile(); }}));
 menu.append(new MenuItem({type: 'separator'}));
 menu.append(new MenuItem({label: 'Main', click() { window.location.href = "#Main" }}));
 menu.append(new MenuItem({label: 'Settings', click() { window.location.href = "#Settings" }}));

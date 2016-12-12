@@ -15,7 +15,7 @@
 
 /*
 * This function replaces a char at a particular index.
-* function from: http://stackoverflow.com/questions/1431094/how-do-i-replace-a-character-at-a-particular-index-in-javascript
+* code from: http://stackoverflow.com/questions/1431094/how-do-i-replace-a-character-at-a-particular-index-in-javascript
 */
 String.prototype.replaceAt=function(index, character)
 {
@@ -197,4 +197,38 @@ function fromVisualWhitespace(input)
 
   //return the original text
   return fromWhitespace(content);
+}
+
+
+/*
+* First, this function will encode the message to white-space.
+* Now it will replace every whitespace in the container text with a whitespace
+* from the encoded message.
+* This way you will get a text which looks like it has a broken fromatting, but
+* whou would guess that there is a message hidden in this weird layout
+*/
+function injectWhitespace(message, container)
+{
+  //encode the message
+  message = toWhitespace(message);
+
+  //loop throw the container and replace all white-spaces
+  var i =  0;
+  for (var j = 0; j < container.length && i < message.length; j++)
+  {
+    if (container.charAt(j) === ' ' || container.charAt(j) === '\t' || container.charAt(j) === '\n' )
+    {
+      container = container.replaceAt(j, message.charAt(i));
+      i++;
+    }
+  }
+
+  //add the rest of the message at the end
+  if(i != message.length)
+  {
+    container += message.substring(i, message.length);
+  }
+
+  //return the injected container
+  return container;
 }
