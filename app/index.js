@@ -17,6 +17,7 @@ var inputTextElement = document.getElementById('textareaInput');
 var outputTextElement = document.getElementById('textareaOutput');
 var saveElement = document.getElementById('btnSave');
 var openElement = document.getElementById('btnOpen');
+var injectElement = document.getElementById('btnInject');
 var copyElement = document.getElementById('btnCopy');
 var pasteElement = document.getElementById('btnPaste');
 var clearElement = document.getElementById('btnClear');
@@ -46,6 +47,7 @@ function outputToClipboard()
   {
     clipboard.writeText(fromWhitespace(inputTextElement.value));
   }
+  ipc.send('CLI-print', 'Copied output to clipboard.');
 }
 
 
@@ -79,20 +81,17 @@ function saveOutputFile()
 
   //create a save dialog (code from http://ourcodeworld.com/articles/read/106/how-to-choose-read-save-delete-or-create-a-file-with-electron-framework)
   dialog.showSaveDialog(function (fileName) {
-    if (fileName === undefined){
-      console.log("You didn't save the file");
-      return;
-    }
+    if (fileName === undefined) return;
+
     // fileName is a string that contains the path and filename created in the save file dialog.
     fs.writeFile(fileName, content, function (err) {
       if(err){
-        alert("An error ocurred creating the file "+ err.message)
+        ipc.send('CLI-print', 'An error ocurred opening the file \'' + fileName + '\': '+ err.message);
       }
       else
       {
-        alert("The file has been succesfully saved");
+        ipc.send('CLI-print', 'Saved Whitespace-file as: \'' + fileName + '\'');
       }
-
 
     });
   });
@@ -108,21 +107,27 @@ function saveOutputFile()
 function openInputFile()
 {
 
-  dialog.showOpenDialog(function (fileNames) {
-
+  dialog.showOpenDialog(function (fileNames)
+  {
     if (fileNames === undefined) return;
 
     var fileName = fileNames[0];
 
-    fs.readFile(fileName, 'utf-8', function (err, data) {
-
-      inputTextElement.value = data;
-      updateOutputElement(); //update the content of the output Textarea
+    fs.readFile(fileName, 'utf-8', function (err, data)
+    {
+      if (err)
+      {
+        ipc.send('CLI-print', 'An error ocurred opening the file \'' + fileName + '\': '+ err.message);
+      }
+      else
+      {
+        inputTextElement.value = data;
+        updateOutputElement(); //update the content of the output Textarea
+        ipc.send('CLI-print', 'Opend file: \'' + fileName + '\'');
+      }
 
     });
-
   });
-
 }
 
 
@@ -161,12 +166,11 @@ function injectOutputFile()
       fs.writeFile(outputFile, injectWhitespace(inputTextElement.value, container), function (err) {
         if(err)
         {
-          alert("An error ocurred creating the file "+ err.message);
+          ipc.send('CLI-print', 'An error ocurred opening the file \'' + fileName + '\': '+ err.message);
         }
         else
         {
-          alert("The file has been succesfully saved");
-          console.log("The file is saved as: " + outputFile);
+          ipc.send('CLI-print', "Saved injected file as: \'" + outputFile + "\'");
         }
       });
 
@@ -208,10 +212,12 @@ function exchangeHTML()
   {
     exchanged = 1;
     $('#textareaInput').attr('placeholder','Paste some encoded text here.');
+    ipc.send('CLI-print','Changed Interface to decode.');
   }
   else {
     exchanged = 0;
     $('#textareaInput').attr('placeholder','Start typing to get hidden text.');
+    ipc.send('CLI-print','Changed Interface to encode.');
   }
 
   //change the headers
@@ -232,6 +238,7 @@ copyElement.addEventListener("click", outputToClipboard);
 pasteElement.addEventListener("click", clipboardToInput)
 saveElement.addEventListener("click", saveOutputFile);
 openElement.addEventListener("click", openInputFile);
+injectElement.addEventListener("click", injectOutputFile);
 clearElement.addEventListener("click", clearInputContent);
 exchangeElement.addEventListener("click", exchangeHTML);
 window.addEventListener('contextmenu', (e) => {

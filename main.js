@@ -4,6 +4,7 @@
 const electron = require('electron');
 const {app, BrowserWindow} = electron;
 const os = require('os');
+const ipc = require('electron').ipcMain;
 
 
 /*
@@ -84,3 +85,12 @@ app.on('window-all-closed', () => {
   console.log("All windows closed, exit Whitespace.");
   app.quit();
 });
+
+
+/*
+* This code waits for a messege from the render process and prints it to the
+* CLI
+*/
+ipc.on('CLI-print', function (event, arg) {
+  console.log(arg);
+})
