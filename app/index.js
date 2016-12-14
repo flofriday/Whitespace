@@ -56,7 +56,7 @@ function outputToClipboard()
 */
 function clipboardToInput()
 {
-  inputTextElement.value = `${clipboard.readText()}`;
+  inputTextElement.value.getSelection() += `${clipboard.readText()}`;
   updateOutputElement();
 }
 
