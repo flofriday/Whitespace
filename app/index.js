@@ -246,6 +246,15 @@ window.addEventListener('contextmenu', (e) => {
   menu.popup(remote.getCurrentWindow());
 }, false);
 
+/*
+* Gets the anchor of the current URL to check and disable context menu
+* which is set in the jQuery script
+*/
+function getMenu() {  
+    var windowlocation = document.URL,
+    anchor = windowlocation.split('#');
+    return (anchor.length > 1) ? anchor[1] : null;
+}
 
 /*
 * This code creates a Chrome contextmenu.
@@ -253,6 +262,22 @@ window.addEventListener('contextmenu', (e) => {
 * so I will probably replace this code afterwards.
 */
 const menu = new Menu();
+
+//Check on which page the user is. If "Main" display context menu (or whatever flo wants to display)
+switch(anchor){
+    case "Settings"
+    //Whatever
+    break;
+    
+    case "About"
+    //Whatever
+    break;
+    
+    //This is window "main"
+    case default
+    //whatever
+}
+
 menu.append(new MenuItem({label: 'Change', click() { exchangeHTML(); }}));
 menu.append(new MenuItem({type: 'separator'}));
 menu.append(new MenuItem({label: 'Copy Output', click() { outputToClipboard(); }}));
