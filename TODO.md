@@ -13,3 +13,4 @@
 * [ ] Notifications. For example to show the user that the file was saved successfully.
 * [ ] Keyboard shortcuts
 * [ ] Create a invisible render Prozess for the encoding so the real render prozess doesn't suffer under the  bad performance from the encoding at large files.
+* [ ] Autoscroll 

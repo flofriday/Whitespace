@@ -84,3 +84,12 @@ Array.prototype.forEach.call(links, function (link) {
     })
   }
 })
+
+
+/*
+* Avoid opening files which are droped into my app to open as a UI
+* (By default electron would open a .html file when it is droped into it.)
+*/
+document.ondragover = document.ondrop = (ev) => {
+  ev.preventDefault();
+}

@@ -8,7 +8,7 @@ const ipc = require('electron').ipcMain;
 
 
 /*
-* write Whitespace in some fancy letters for the CLI users.
+* Write Whitespace in some fancy letters for the CLI users.
 * So the freaks will have a reason to smile.
 * Also this way this app will be different from  most others Applications
 */
@@ -50,7 +50,7 @@ function getLogoPath()
 
 
 /*
-* Creat a Browser window when the app ist started.
+* Create a Browser window when the app ist started.
 */
 app.on('ready', () =>
 {

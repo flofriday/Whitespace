@@ -10,6 +10,7 @@ const {remote} = require('electron');
 const {Menu, MenuItem} = remote;
 const ipc = require('electron').ipcRenderer;
 
+
 /*
 * Grabbing some elements by their IDs
 */
@@ -77,7 +78,9 @@ function clearInputContent()
 function saveOutputFile()
 {
   //creating the content which will be in the file.
-  var content = toWhitespace(inputTextElement.value);  //copy the textarea content into this variable
+  var content
+  if (exchanged === 1) content = fromWhitespace(inputTextElement.value);  //copy the textarea content into this variable
+  if (exchanged === 0) content = toWhitespace(inputTextElement.value);
 
   //create a save dialog (code from http://ourcodeworld.com/articles/read/106/how-to-choose-read-save-delete-or-create-a-file-with-electron-framework)
   dialog.showSaveDialog(function (fileName) {
@@ -141,6 +144,13 @@ function openInputFile()
 */
 function injectOutputFile()
 {
+  //check if Whitespace is even in encode modules
+  if (exchanged === 1)
+  {
+    alert('You can only inject Code not normal text!');
+    return;
+  }
+
   //create some variables
   var container;
   var inputFile;
@@ -259,10 +269,37 @@ menu.append(new MenuItem({label: 'Copy Output', click() { outputToClipboard(); }
 menu.append(new MenuItem({label: 'Paste Input', click() { clipboardToInput(); }}));
 menu.append(new MenuItem({label: 'Clear Input', click() { clearInputContent(); }}));
 menu.append(new MenuItem({type: 'separator'}));
-menu.append(new MenuItem({label: 'Save As', click() { saveOutputFile(); }}));
+menu.append(new MenuItem({label: 'Save As', accelerator: 'CommandOrControl+Alt+K', click() { saveOutputFile(); }}));
 menu.append(new MenuItem({label: 'Open File', click(){ openInputFile(); }}));
 menu.append(new MenuItem({label: 'Inject Code', click(){ injectOutputFile(); }}));
 menu.append(new MenuItem({type: 'separator'}));
 menu.append(new MenuItem({label: 'Main', click() { window.location.href = "#Main" }}));
 menu.append(new MenuItem({label: 'Settings', click() { window.location.href = "#Settings" }}));
 menu.append(new MenuItem({label: 'About', click() { window.location.href = "#About" }}));
+
+
+/*
+* This code handels droping files into Whitespace. Every droped file will be
+* opend as a input file.
+*/
+document.body.ondrop = (ev) =>
+{
+  var fileName = ev.dataTransfer.files[0].path;
+
+  fs.readFile(fileName, 'utf-8', function (err, data)
+  {
+    if (err)
+    {
+      ipc.send('CLI-print', 'An error ocurred opening the file \'' + fileName + '\': '+ err.message);
+    }
+    else
+    {
+      inputTextElement.value = data;
+      updateOutputElement(); //update the content of the output Textarea
+      ipc.send('CLI-print', 'Opend droped file: \'' + fileName + '\'');
+    }
+
+  });
+
+  ev.preventDefault();
+};
