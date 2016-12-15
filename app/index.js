@@ -57,7 +57,12 @@ function outputToClipboard()
 */
 function clipboardToInput()
 {
-  inputTextElement.value = `${clipboard.readText()}`;
+  var $txt = jQuery("#textareaInput");
+  var caretPos = $txt[0].selectionStart;
+  var textAreaTxt = $txt.val();
+  var txtToAdd = `${clipboard.readText()}`;
+  $txt.val(textAreaTxt.substring(0, caretPos) + txtToAdd + textAreaTxt.substring(caretPos) );
+
   updateOutputElement();
 }
 
@@ -187,7 +192,6 @@ function injectOutputFile()
     });
 
   });
-
 }
 
 
@@ -255,6 +259,27 @@ window.addEventListener('contextmenu', (e) => {
   e.preventDefault();
   menu.popup(remote.getCurrentWindow());
 }, false);
+document.body.ondrop = (ev) => {  //This code handels droping files into Whitespace. Every droped file will be opend as a input file.
+
+ var fileName = ev.dataTransfer.files[0].path;
+
+  fs.readFile(fileName, 'utf-8', function (err, data)
+  {
+    if (err)
+    {
+      ipc.send('CLI-print', 'An error ocurred opening the file \'' + fileName + '\': '+ err.message);
+    }
+    else
+    {
+      inputTextElement.value = data;
+      updateOutputElement(); //update the content of the output Textarea
+      ipc.send('CLI-print', 'Opend droped file: \'' + fileName + '\'');
+    }
+
+  });
+
+  ev.preventDefault();
+};
 
 
 /*
@@ -275,31 +300,4 @@ menu.append(new MenuItem({label: 'Inject Code', click(){ injectOutputFile(); }})
 menu.append(new MenuItem({type: 'separator'}));
 menu.append(new MenuItem({label: 'Main', click() { window.location.href = "#Main" }}));
 menu.append(new MenuItem({label: 'Settings', click() { window.location.href = "#Settings" }}));
-menu.append(new MenuItem({label: 'About', click() { window.location.href = "#About" }}));
-
-
-/*
-* This code handels droping files into Whitespace. Every droped file will be
-* opend as a input file.
-*/
-document.body.ondrop = (ev) =>
-{
-  var fileName = ev.dataTransfer.files[0].path;
-
-  fs.readFile(fileName, 'utf-8', function (err, data)
-  {
-    if (err)
-    {
-      ipc.send('CLI-print', 'An error ocurred opening the file \'' + fileName + '\': '+ err.message);
-    }
-    else
-    {
-      inputTextElement.value = data;
-      updateOutputElement(); //update the content of the output Textarea
-      ipc.send('CLI-print', 'Opend droped file: \'' + fileName + '\'');
-    }
-
-  });
-
-  ev.preventDefault();
-};
+menu.append(new MenuItem({label: 'About', click() { window.location.href = "#About" }}));s

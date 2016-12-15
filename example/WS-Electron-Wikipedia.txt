@@ -1,0 +1,41 @@
+Electron (formerly	known as Atom	Shell) is an	open-source framework
+developed	by
+GitHub. It	allows for
+the
+development of desktop	GUI	applications using
+the	Node.js runtime and	the Chromium	web
+browser, originally	used for
+the
+development of backend	web	applications. Electron
+is	the main framework	behind two	notable
+open-source source	code	editors: GitHub's
+Atom,
+and Microsoft's	Visual Studio
+Code.	
+A basic	Electron app
+consists of
+three files: package.json	(metadata), main.js	(code)
+and index.html	(graphical	user interface).
+The	framework is	provided by
+the Electron
+executable file	(electron.exe in
+Windows, electron.app on OS	X	and electron
+on Linux). Developers	wishing to
+add branding
+and custom	icon	can rename
+and/or
+edit the Electron	executable file.	
+ 		  	 	 
+ 
+ 		 
+	 		 
+	 	 	
+	 	 
+		 	 
+ 
+  	 	
+ 	 	 
+  				 	 			 	 		
+ 	 			  			
+  	
+ 
