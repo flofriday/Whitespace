@@ -45,7 +45,7 @@ $("textarea").hover(
 *
 * This code is copied from: http://stackoverflow.com/questions/6140632/how-to-handle-tab-in-textarea
 */
-$("textarea").keydown(function(e) {
+$("#textareaInput").keydown(function(e) {
   if(e.keyCode === 9) { // tab was pressed
     // get caret position/selection
     var start = this.selectionStart;

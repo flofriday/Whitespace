@@ -29,7 +29,7 @@ String.prototype.replaceAt=function(index, character)
 * really doesn't care.
 * However, the output is the input string encoded to Whitespace.
 */
-function toWhitespace(input)
+function whitespaceEncode(input)
 {
   //define all variables
   var output = "";
@@ -82,7 +82,7 @@ function toWhitespace(input)
 * white-spaces. So feel free to give this function a string with some text between
 * the white-spaces.
 */
-function fromWhitespace(input)
+function whitespaceDecode(input)
 {
   //define all variables
   var output = "";
@@ -152,10 +152,10 @@ function fromWhitespace(input)
 * Instead of tab it uses '>'
 * Instead of a linefeed it uses '¶'
 */
-function toVisualWhitespace(input)
+function whitespaceEncodeVisual(input)
 {
   //encode the whole input string to white-spaces
-  var content = toWhitespace(input);
+  var content = whitespaceEncode(input);
 
   //Replace the white-spaces with visual characterss
   for (var i = 0; i < content.length; i++)
@@ -175,7 +175,7 @@ function toVisualWhitespace(input)
 * However, it uses visual white-spaces instead of real white-spaces ... you
 * can read about visual whitespaces in the comment above the function toVisualWhitespace
 */
-function fromVisualWhitespace(input)
+function whitespaceDecodeVisual(input)
 {
   //clear input string from none visual white-space characters.
   var content = "";
@@ -196,7 +196,7 @@ function fromVisualWhitespace(input)
   }
 
   //return the original text
-  return fromWhitespace(content);
+  return whitespaceDecode(content);
 }
 
 
@@ -207,10 +207,10 @@ function fromVisualWhitespace(input)
 * This way you will get a text which looks like it has a broken fromatting, but
 * whou would guess that there is a message hidden in this weird layout
 */
-function injectWhitespace(message, container)
+function whitespaceInject(message, container)
 {
   //encode the message
-  message = toWhitespace(message);
+  message = whitespaceEncode(message);
 
   //loop throw the container and replace all white-spaces
   var i =  0;

@@ -2,6 +2,7 @@
 * Loading some components
 */
 const app = require('electron').remote;
+const BrowserWindow = require('electron').remote.BrowserWindow;
 const dialog = app.dialog;
 const fs = require('fs');
 const path = require('path');
@@ -9,6 +10,33 @@ const clipboard = require('electron').clipboard;
 const {remote} = require('electron');
 const {Menu, MenuItem} = remote;
 const ipc = require('electron').ipcRenderer;
+
+
+/*
+* Setting up and spawn the deamon process
+* The deamon process is a background process (invisible window) which will be
+* used to encode and decode.
+* This is needed because if Whitespace would do this in the default render
+* process it would hang and even the UI wouldn't response to scroll, click etc.
+*/
+function spawnDeamon()
+{
+  deamon = new BrowserWindow({ width: 500, height: 500, show: false });
+  deamon.loadURL(`file://${__dirname}/deamon.html`);
+  if(app.process.argv[2] === '--test')
+  {
+    deamon.openDevTools();
+    deamon.show();
+  }
+}
+spawnDeamon();
+//TODO  I wanted to create a listener to know if the deamon process is closed, if so the whole app should die and the code below works but if i close the main window with the deamon still running i get a JS error
+/*deamon.on('closed', () =>
+{
+ipc.send('CLI-print', 'Whitespace-deamon isn\'t available, close Window.');
+window.close();
+})*/
+
 
 
 /*
@@ -30,6 +58,7 @@ var rightHeaderElement = document.getElementById('rightheader');
 //defining some global variables
 var exchanged = 0;  //this variable describes if the code has to encode or has to decode.
 var visualWhitespace = 1;
+var deamonProcesses = 0; //Counts how many tasks the invisible process is doing rigth now
 
 
 /*
@@ -42,11 +71,11 @@ function outputToClipboard()
 {
   if (exchanged === 0)
   {
-    clipboard.writeText(toWhitespace(inputTextElement.value));
+    clipboard.writeText(whitespaceEncode(inputTextElement.value));
   }
   else
   {
-    clipboard.writeText(fromWhitespace(inputTextElement.value));
+    clipboard.writeText(whitespaceDecode(inputTextElement.value));
   }
   ipc.send('CLI-print', 'Copied output to clipboard.');
 }
@@ -78,14 +107,14 @@ function clearInputContent()
 
 
 /*
-* This function opens a Save dialog and saves the whitespace code into a new file.
+* This function opens a Save gdialog and saves the whitespace code into a new file.
 */
 function saveOutputFile()
 {
   //creating the content which will be in the file.
   var content
-  if (exchanged === 1) content = fromWhitespace(inputTextElement.value);  //copy the textarea content into this variable
-  if (exchanged === 0) content = toWhitespace(inputTextElement.value);
+  if (exchanged === 1) content = whitespaceDecode(inputTextElement.value);  //copy the textarea content into this variable
+  if (exchanged === 0) content = whitespaceEncode(inputTextElement.value);
 
   //create a save dialog (code from http://ourcodeworld.com/articles/read/106/how-to-choose-read-save-delete-or-create-a-file-with-electron-framework)
   dialog.showSaveDialog(function (fileName) {
@@ -178,7 +207,7 @@ function injectOutputFile()
       outputFile = path.join(a, 'WS-' + b);
 
       //write the content to the file
-      fs.writeFile(outputFile, injectWhitespace(inputTextElement.value, container), function (err) {
+      fs.writeFile(outputFile, whitespaceInject(inputTextElement.value, container), function (err) {
         if(err)
         {
           ipc.send('CLI-print', 'An error ocurred opening the file \'' + fileName + '\': '+ err.message);
@@ -192,25 +221,6 @@ function injectOutputFile()
     });
 
   });
-}
-
-
-/*
-* This function checks if the app has to encode to Whitespace or from Whitespace
-* After that it also updates the Output textarea with the encoded or decoded
-* characters
-*/
-function updateOutputElement()
-{
-  if (exchanged === 0)
-  {
-    if (visualWhitespace === 1){ outputTextElement.innerHTML = toVisualWhitespace(inputTextElement.value); }
-    else {outputTextElement.innerHTML = toWhitespace(inputTextElement.value);}
-  }
-  else
-  {
-    outputTextElement.innerHTML = fromWhitespace(inputTextElement.value)
-  }
 }
 
 
@@ -244,10 +254,99 @@ function exchangeHTML()
 
 
 /*
+* This function checks if the app has to encode to Whitespace or from Whitespace
+* After that it also updates the Output textarea with the encoded or decoded
+* characters
+*/
+function updateOutputElement()
+{
+  if (exchanged === 0)
+  {
+    if (visualWhitespace === 1){ sendDeamon('WS-encodeVisual', inputTextElement.value); }
+    else {sendDeamon('WS-encode', inputTextElement.value);}
+  }
+  else
+  {
+    sendDeamon('WS-decode', inputTextElement.value);
+  }
+}
+
+
+/*
+* This function sends the right messages to the deamon process
+*/
+function sendDeamon(channel, message, file)
+{
+  switch (channel)
+  {
+    case "WS-encode":
+    deamon.webContents.send(channel, message);
+    break;
+
+    case "WS-decode":
+    deamon.webContents.send(channel, message);
+    break;
+
+    case "WS-encodeVisual":
+    deamon.webContents.send(channel, message);
+    break;
+
+    case "WS-decodeVisual":
+    deamon.webContents.send(channel, message);
+    break;
+
+    case "WS-inject":
+    deamon.webContents.send(channel, message, file);
+    break;
+
+    case "WS-encodeFile":
+    deamon.webContents.send(channel, message, file);
+    break;
+
+    default:
+    ipc.send('CLI-print', 'FATAL ERROR! In Code: function sendDeamon() got a channel that isn\'t defiened.');
+    return;
+  }
+
+  deamonProcesses++ ;
+  $("body").addClass("wait");
+  console.log('send event: deamonProcesses = ' + deamonProcesses);
+}
+
+
+/*
+* This code listens for the deamon process if the text for the textarea is ready
+*/
+ipc.on('UI-outputReady', function (event, message)
+{
+  outputTextElement.value = message;
+  deamonProcesses-- ;
+  if (deamonProcesses === 0)
+  {
+    outputTextElement.value = message;
+    $("body").removeClass("wait");
+  };
+
+})
+
+
+/*
+* This code listens for the deamon process if a file is ready
+*/
+ipc.on('FS-fileReady', function (event, content, filepath)
+{
+  deamonProcesses-- ;
+  if (deamonProcesses === 0) $("body").removeClass("wait");
+})
+
+
+/*
 * creating some EventListener
 */
 inputTextElement.addEventListener("input", updateOutputElement);  //if the normal input changes
-inputTextElement.addEventListener("keydown", updateOutputElement);  //tabs aren't handeled as normal input so I have also to listen to a keydown event.
+$("#textareaInput").keydown(function(e) { //tabs aren't handeled as normal input so I have also to listen to a keydown event.
+if(e.keyCode === 9) updateOutputElement();
+});
 copyElement.addEventListener("click", outputToClipboard);
 pasteElement.addEventListener("click", clipboardToInput)
 saveElement.addEventListener("click", saveOutputFile);
@@ -261,7 +360,7 @@ window.addEventListener('contextmenu', (e) => {
 }, false);
 document.body.ondrop = (ev) => {  //This code handels droping files into Whitespace. Every droped file will be opend as a input file.
 
- var fileName = ev.dataTransfer.files[0].path;
+  var fileName = ev.dataTransfer.files[0].path;
 
   fs.readFile(fileName, 'utf-8', function (err, data)
   {
@@ -300,4 +399,4 @@ menu.append(new MenuItem({label: 'Inject Code', click(){ injectOutputFile(); }})
 menu.append(new MenuItem({type: 'separator'}));
 menu.append(new MenuItem({label: 'Main', click() { window.location.href = "#Main" }}));
 menu.append(new MenuItem({label: 'Settings', click() { window.location.href = "#Settings" }}));
-menu.append(new MenuItem({label: 'About', click() { window.location.href = "#About" }}));s
+menu.append(new MenuItem({label: 'About', click() { window.location.href = "#About" }}));

@@ -19,6 +19,11 @@ html *{
 pointer-events: none;
 }
 
+body.wait, body.wait *{
+ cursor: wait !important;
+}
+
+
 .section{
 	text-align:center;
 }
